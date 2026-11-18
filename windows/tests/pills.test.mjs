@@ -31,6 +31,7 @@ test("the catalog holds the Mac's pills with the Claude Code label for Windows a
     ["agent_amp", "Amp", "#F59E0B", "agent", "Agent"],
     ["agent_hermes", "Hermes", "#C084FC", "agent", "Agent"],
     ["agent_claude-desktop", "Claude Desktop", "#D97757", "agent", "Agent"],
+    ["agent_mark-li", "JARVIS / Mark-LI", "#00D4FF", "agent", "Agent"],
     ["ai_anthropic", "Anthropic", "#E07950", "ai", "Chat"],
     ["ai_google", "Google AI", "#4285F4", "ai", "Chat"],
     ["ai_openai", "OpenAI", "#10A37F", "ai", "Chat"],
@@ -110,6 +111,8 @@ test("this build leaves out what only macOS has", () => {
   }
   assert.ok(windows.includes("agent_claude-desktop"));
   assert.ok(linux.includes("agent_claude-desktop"));
+  assert.ok(windows.includes("agent_mark-li"));
+  assert.ok(linux.includes("agent_mark-li"));
   // Mail is Outlook's, and Outlook is a Windows program.
   assert.ok(windows.includes("integration_mail"));
   assert.ok(!linux.includes("integration_mail"));
@@ -160,7 +163,7 @@ test("the main pill is a workspace tool that works here", () => {
 });
 
 test("hook-driven pills are the workspace tools and the agents with hooks", () => {
-  for (const id of ["integration_claude", "agent_cursor", "agent_codex", "agent_gemini", "agent_copilot", "agent_muse", "agent_antigravity", "agent_opencode", "agent_amp", "agent_hermes"]) {
+  for (const id of ["integration_claude", "agent_cursor", "agent_codex", "agent_gemini", "agent_copilot", "agent_muse", "agent_antigravity", "agent_opencode", "agent_amp", "agent_hermes", "agent_mark-li"]) {
     assert.ok(isHookPill(id), id);
   }
   for (const id of ["agent_claude-desktop", "ai_anthropic", "integration_stripe", "agent_unknown"]) {
@@ -172,6 +175,7 @@ test("a live session names its tool next to the project", () => {
   assert.equal(sessionSubtitle("integration_claude"), "Claude Code");
   assert.equal(sessionSubtitle("agent_cursor"), "Cursor");
   assert.equal(sessionSubtitle("agent_claude-desktop"), "Claude Desktop");
+  assert.equal(sessionSubtitle("agent_mark-li"), "JARVIS");
   assert.equal(sessionSubtitle("agent_gemini"), "Agent");
   assert.equal(sessionSubtitle("agent_whatever"), "Agent");
 });

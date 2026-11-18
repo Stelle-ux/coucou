@@ -423,6 +423,15 @@ test("an agent's last words show when it stops", () => {
   assert.deepEqual(task("agent_hermes").steps, ["All done, tests pass."]);
 });
 
+test("a JARVIS / Mark-LI session routes to agent_mark-li in its cyan colour", () => {
+  hook({ hook_event_name: "SessionStart", cwd: "C:\p\proj", session_id: "m1", coucou_agent: "mark-li" });
+  const j = task("agent_mark-li");
+  assert.equal(j.color, "#00D4FF");
+  assert.equal(j.sessionId, "m1");
+  assert.equal(j.name, "JARVIS / Mark-LI");
+  hook({ hook_event_name: "SessionEnd", coucou_agent: "mark-li" });
+});
+
 test("a Claude Desktop session gets the Claude Desktop pill, in its colour (Mac #191)", () => {
   hook({ hook_event_name: "SessionStart", cwd: "C:\\p\\proj", session_id: "d1", coucou_agent: "claude-desktop" });
   const desktop = task("agent_claude-desktop");

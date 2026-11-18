@@ -57,7 +57,8 @@
       "nsis": {
         "installMode": "currentUser",
         "languages": ["English", "French"],
-        "installerHooks": "nsis/hooks.nsh"
+        "installerHooks": "nsis/hooks.nsh",
+        "startMenuFolder": "Coucou"
       }
     }
   }

@@ -110,6 +110,7 @@ const AGENT_NAMES: Record<string, string> = {
   agent_amp: "Amp",
   agent_hermes: "Hermes",
   "agent_claude-desktop": "Claude Desktop",
+  "agent_mark-li": "JARVIS / Mark-LI",
 };
 
 export function agentName(id: string): string {

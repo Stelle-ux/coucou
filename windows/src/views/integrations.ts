@@ -105,6 +105,15 @@ function idleCard(task: AgentTask, openSettings: () => void): HTMLElement {
         onclick: () => void Bridge.openClaudeDesktop(),
       }),
     );
+  } else if (task.id === "agent_mark-li") {
+    actions.append(
+      h("button", {
+        class: "link-btn",
+        style: `color:${task.color}d9`,
+        text: t("Open {name}", { name: "JARVIS" }),
+        onclick: () => void Bridge.openUrl("http://127.0.0.1:8000"),
+      }),
+    );
   } else if (task.id === "integration_n8n") {
     actions.append(
       h("button", {

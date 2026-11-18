@@ -100,6 +100,8 @@ export const PILL_CATALOG: readonly PillDefinition[] = [
   // official builds for Windows and Linux (.deb).
   { id: "agent_claude-desktop", name: "Claude Desktop", color: "#D97757", category: "agent",
     subtitle: N_("Agent"), source: "agent", support: "yes", connect: none },
+  { id: "agent_mark-li", name: "JARVIS / Mark-LI", color: "#00D4FF", category: "agent",
+    subtitle: N_("Agent"), source: "agent", support: "yes", connect: hooks },
   // ── AI for the chat ────────────────────────────────────────────────────────
   { id: "ai_anthropic", name: "Anthropic", color: ACCENT.anthropic, category: "ai",
     subtitle: N_("Chat"), source: "n8n", support: "yes", connect: key("anthropic-api-key") },
@@ -193,6 +195,7 @@ export function sessionSubtitle(id: string): string {
     case "agent_codex": return "Codex";
     case "agent_hermes": return "Hermes";
     case "agent_claude-desktop": return "Claude Desktop";
+    case "agent_mark-li": return "JARVIS";
     default: return N_("Agent");
   }
 }

@@ -387,10 +387,10 @@ function handleHook(island: Island, payload: HookPayload) {
   // Route to the right pill. Valid coucou_agent → dynamic "agent_<name>" pill.
   // "claude" is reserved; absent or invalid → Claude Code's own pill: Cursor's
   // when it runs in Cursor's terminal (Mac #120), VS Code's otherwise.
-  const validAgent = validateAgent(payload.coucou_agent);
+  const rawAgent = validateAgent(payload.coucou_agent);
   const workspaceId = payload.term_editor === "cursor" ? CURSOR_ID : CLAUDE_ID;
-  const agentId = validAgent ? `agent_${validAgent}` : workspaceId;
-  const isExternalAgent = validAgent !== null;
+  const agentId = rawAgent ? `agent_${rawAgent}` : workspaceId;
+  const isExternalAgent = rawAgent !== null;
   const sessionId = payload.session_id ?? "";
 
   /** Alerts force the island open; work events only reveal the compact island. */
@@ -407,7 +407,7 @@ function handleHook(island: Island, payload: HookPayload) {
   /** Ensure the agent pill exists (no-op for Claude Code). */
   const ensurePill = () => {
     if (isExternalAgent) {
-      State.upsertExternalAgent(agentId, agentName(validAgent!), agentColor(validAgent!));
+      State.upsertExternalAgent(agentId, agentName(rawAgent!), agentColor(rawAgent!));
       const t = State.tasks.find((x) => x.id === agentId);
       if (t && cwd) t.sessionCwd = cwd;
       if (t && sessionId) t.sessionId = sessionId;
@@ -453,7 +453,7 @@ function handleHook(island: Island, payload: HookPayload) {
       ensurePill();
       clearFinalLine(agentId);
       // Hermes through its gateway says where the session comes from.
-      if (validAgent === "hermes" && payload.platform && payload.platform !== "cli") {
+      if (rawAgent === "hermes" && payload.platform && payload.platform !== "cli") {
         State.appendStep(agentId, payload.platform.charAt(0).toUpperCase() + payload.platform.slice(1));
       }
       surface("overview", false);
@@ -609,7 +609,7 @@ function handleHook(island: Island, payload: HookPayload) {
       // CLI, Muse Code, and Antigravity's commands when that is turned on — same
       // as the Mac) get a card. Anyone else's request is declined at once, so the
       // agent asks in its own terminal.
-      if (isExternalAgent && !takesCard(validAgent, payload.coucou_kind)) {
+      if (isExternalAgent && !takesCard(rawAgent, payload.coucou_kind)) {
         if (payload.request_id) void Bridge.approvalDecline(payload.request_id);
         break;
       }
@@ -636,7 +636,7 @@ function handleHook(island: Island, payload: HookPayload) {
       const input = payload.tool_input ?? {};
       // Claude Code (including Claude Desktop) asking a question is not a permission to grant: the island
       // shows the options and sends back the one that was picked.
-      const isClaude = !isExternalAgent || validAgent === "claude-desktop";
+      const isClaude = !isExternalAgent || rawAgent === "claude-desktop";
       const questions = isClaude ? askedQuestions(tool, input) : null;
       const view = questions ? "question" : "approval";
 
